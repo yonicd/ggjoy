@@ -146,9 +146,8 @@ StatJoy <- ggproto("StatJoy", Stat,
       n <- length(d$x)
       ecdf <- c(0, cumsum(d$y[1:(n-1)]*(d$x[2:n]-d$x[1:(n-1)])))
 
-      if (length(quantiles)==1) {
-        ntile <- 1 + floor(quantiles * ecdf)
-        ntile[ntile>quantiles] <- quantiles
+      if (sum(quantiles-as.integer(quantiles))==0) {
+        ntile <- cut(ecdf,quantiles,include.lowest = TRUE, right = TRUE)
       }
       else {
         ntile <- cut(ecdf,
